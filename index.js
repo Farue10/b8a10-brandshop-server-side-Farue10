@@ -25,7 +25,7 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    // await client.connect()
+    // await client.connect()node
 
     const userCollection = client.db("userDB").collection("user");
     const deatilsCollection = client.db("deatilsDB").collection("deatils");
@@ -97,15 +97,18 @@ async function run() {
     //-------DeailsCollection start haere---------------------
 
     app.post("/deatils", async (req, res) => {
-        const user = req.body;
-        console.log(user);
-        const result = await deatilsCollection.insertOne(user);
+        const cardInfo = req.body;
+        console.log(cardInfo);
+        const result = await deatilsCollection.insertOne(cardInfo);
         res.send(result);
       });
 
       
     app.get("/deatils", async (req, res) => {
-        const cursor = deatilsCollection.find();
+        const {user} = req.query
+        console.log(user);
+        const query = {email: user}
+        const cursor = deatilsCollection.find(query);
         const result = await cursor.toArray();
         res.send(result);
       });
